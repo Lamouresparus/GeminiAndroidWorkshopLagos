@@ -1,4 +1,4 @@
-package com.love.geminiandroid.ui
+package com.love.geminiandroidworkshoplagos.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +39,7 @@ fun TextScreen() {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
+            .padding(bottom = 80.dp)
     ) {
         ElevatedCard(
             modifier = Modifier
@@ -78,7 +79,7 @@ fun Loading() {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(all = 8.dp)
-//            .align(Alignment.CenterHorizontally)
+            .fillMaxWidth()
     ) {
         CircularProgressIndicator()
     }
