@@ -1,4 +1,4 @@
-package com.love.geminiandroid.ui
+package com.love.geminiandroidworkshoplagos.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.size
@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.love.geminiandroidworkshoplagos.ui.TextScreen
+import com.love.geminiandroidworkshoplagos.ui.feature.chat.ChatScreen
+import com.love.geminiandroidworkshoplagos.ui.feature.photo.PhotoScreen
+import com.love.geminiandroidworkshoplagos.ui.feature.text.TextScreen
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.regular.ClosedCaptioning

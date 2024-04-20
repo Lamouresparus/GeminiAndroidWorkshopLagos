@@ -1,4 +1,4 @@
-package com.love.geminiandroidworkshoplagos.ui
+package com.love.geminiandroidworkshoplagos.ui.feature.text
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

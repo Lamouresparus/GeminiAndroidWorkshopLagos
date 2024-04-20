@@ -1,4 +1,4 @@
-package com.love.geminiandroidworkshoplagos.ui
+package com.love.geminiandroidworkshoplagos.ui.feature.text
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
