@@ -102,6 +102,7 @@ fun PhotoReasoningScreen(
     Column(
         modifier = Modifier
             .padding(all = 16.dp)
+            .padding(bottom = 80.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Card(
@@ -171,7 +172,7 @@ fun Loader() {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(all = 8.dp)
-//            .align(Alignment.CenterHorizontally)
+            .fillMaxWidth()
     ) {
         CircularProgressIndicator()
     }
@@ -179,7 +180,7 @@ fun Loader() {
 
 // TODO(use this to represent the error state - AI failed to process request or any form of exception)
 @Composable
-fun ErrorView(errorMessage: String) {
+fun GeneratedContentErrorView(errorMessage: String) {
     Card(
         modifier = Modifier
             .padding(vertical = 16.dp)
@@ -200,7 +201,7 @@ fun ErrorView(errorMessage: String) {
 
 // TODO(use this to represent the Content state - AI generated content)
 @Composable
-fun GeneratedContent(generatedText: String) {
+fun GeneratedContentSuccess(generatedText: String) {
     Card(
         modifier = Modifier
             .padding(vertical = 16.dp)
