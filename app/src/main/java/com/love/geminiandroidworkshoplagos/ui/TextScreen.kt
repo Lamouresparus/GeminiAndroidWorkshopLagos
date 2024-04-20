@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,12 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun TextScreen() {
+    val textViewModel: TextViewModel = viewModel()
 
     var textToSummarize by rememberSaveable { mutableStateOf("") }
+    val viewState by textViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -59,7 +63,7 @@ fun TextScreen() {
                 onClick = {
                     if (textToSummarize.isNotBlank()) {
 
-                        // call gemini to generate text from prompt
+                        textViewModel.summarize(textToSummarize)
                     }
                 },
                 modifier = Modifier
@@ -68,6 +72,13 @@ fun TextScreen() {
             ) {
                 Text("Submit")
             }
+        }
+
+        when (val state = viewState) {
+            is SummarizeTextUiState.Error -> ComposableForFailedGeneration(errorMessage = state.errorMessage)
+            SummarizeTextUiState.Initial -> {} // Do nothing
+            SummarizeTextUiState.Loading -> Loading()
+            is SummarizeTextUiState.Success -> ComposableForSuccessGeneration(generatedText = state.outputText)
         }
     }
 }
