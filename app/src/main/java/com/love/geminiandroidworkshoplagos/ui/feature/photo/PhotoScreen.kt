@@ -1,4 +1,4 @@
-package com.love.geminiandroid.ui
+package com.love.geminiandroidworkshoplagos.ui.feature.photo
 
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri

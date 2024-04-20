@@ -1,4 +1,4 @@
-package com.love.geminiandroid.ui
+package com.love.geminiandroidworkshoplagos.ui.feature.chat
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
