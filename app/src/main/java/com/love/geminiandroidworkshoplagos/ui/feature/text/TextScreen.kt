@@ -83,7 +83,6 @@ fun TextScreen() {
     }
 }
 
-// TODO(use this to represent the loading state - AI is thinking)
 @Composable
 fun Loading() {
     Box(
@@ -96,7 +95,6 @@ fun Loading() {
     }
 }
 
-// TODO(use this to represent the error state - AI failed to process request or any form of exception)
 @Composable
 fun ComposableForFailedGeneration(errorMessage: String) {
     Card(
@@ -117,7 +115,6 @@ fun ComposableForFailedGeneration(errorMessage: String) {
 }
 
 
-// TODO(use this to represent the Content state - AI generated content)
 @Composable
 fun ComposableForSuccessGeneration(generatedText: String) {
     Card(

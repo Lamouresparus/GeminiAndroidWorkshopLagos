@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +41,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -54,8 +56,11 @@ fun PhotoScreen() {
     val coroutineScope = rememberCoroutineScope()
     val imageRequestBuilder = ImageRequest.Builder(LocalContext.current)
     val imageLoader = ImageLoader.Builder(LocalContext.current).build()
+    val photoReasoningViewModel: PhotoReasoningViewModel = viewModel()
+    val uiState by photoReasoningViewModel.uiState.collectAsState()
 
     PhotoReasoningScreen(
+        viewState = uiState,
         onReasonClicked = { inputText, selectedItems ->
             coroutineScope.launch {
                 val bitmaps = selectedItems.mapNotNull {
@@ -76,8 +81,7 @@ fun PhotoScreen() {
                         return@mapNotNull null
                     }
                 }
-                // TODO(call viewmodel to generate ai response with text and images)
-//                viewModel.reason(inputText, bitmaps)
+                photoReasoningViewModel.reason(inputText, bitmaps)
             }
         }
     )
@@ -86,6 +90,7 @@ fun PhotoScreen() {
 
 @Composable
 fun PhotoReasoningScreen(
+    viewState: PhotoReasoningUiState = PhotoReasoningUiState.Loading,
     onReasonClicked: (String, List<Uri>) -> Unit = { _, _ -> }
 ) {
     var userQuestion by rememberSaveable { mutableStateOf("") }
@@ -102,6 +107,7 @@ fun PhotoReasoningScreen(
     Column(
         modifier = Modifier
             .padding(all = 16.dp)
+            .padding(bottom = 80.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Card(
@@ -160,26 +166,29 @@ fun PhotoReasoningScreen(
                 }
             }
         }
-
+        when(viewState){
+            is PhotoReasoningUiState.Error -> GeneratedContentErrorView(errorMessage = viewState.errorMessage)
+            PhotoReasoningUiState.Initial -> { } // do nothing
+            PhotoReasoningUiState.Loading -> Loader()
+            is PhotoReasoningUiState.Success -> GeneratedContentSuccess(generatedText = viewState.outputText)
+        }
     }
 }
 
-// TODO(use this to represent the laoding state - AI is thinking)
 @Composable
 fun Loader() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(all = 8.dp)
-//            .align(Alignment.CenterHorizontally)
+            .fillMaxWidth()
     ) {
         CircularProgressIndicator()
     }
 }
 
-// TODO(use this to represent the error state - AI failed to process request or any form of exception)
 @Composable
-fun ErrorView(errorMessage: String) {
+fun GeneratedContentErrorView(errorMessage: String) {
     Card(
         modifier = Modifier
             .padding(vertical = 16.dp)
@@ -198,9 +207,8 @@ fun ErrorView(errorMessage: String) {
 }
 
 
-// TODO(use this to represent the Content state - AI generated content)
 @Composable
-fun GeneratedContent(generatedText: String) {
+fun GeneratedContentSuccess(generatedText: String) {
     Card(
         modifier = Modifier
             .padding(vertical = 16.dp)
