@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.*
 import kotlinx.coroutines.launch
 
@@ -90,15 +92,16 @@ fun ChatScreen() {
 
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
+    val chatViewModel: ChatViewModel = viewModel()
+    val chatUiState by chatViewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = 80.dp)
     ) {
-        // TODO() Messages List -> replace with messages from VM
         ChatList(
-            dummyChatHistory,
+            chatUiState.messages,
             listState,
             Modifier
                 .fillMaxSize()
@@ -107,7 +110,7 @@ fun ChatScreen() {
 
         MessageInput(
             onSendMessage = { inputText ->
-                // TODO() send message to gemini
+                chatViewModel.sendMessage(inputText)
             },
             resetScroll = {
                 coroutineScope.launch {
